@@ -6,18 +6,21 @@ class Book(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument("title", type=str, required=True, help="This field cannot be left blank!")
     parser.add_argument("price", type=float, required=True, help="This field cannot be left blank!")
-
-    def get(self, book_id):
+    
+    @staticmethod
+    def get(book_id):
         print(book_id)
         book = BookModel.find_by_id(book_id)
         if book:
             return book.json()
         return {'message': 'Item not found'}, 404
-
-    def put(self, book_id):
+    
+    @staticmethod
+    def put(book_id):
         pass
-
-    def delete(self, book_id):
+    
+    @staticmethod
+    def delete(book_id):
         pass
 
 
@@ -25,8 +28,9 @@ class CreateBook(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument("title", type=str, required=True, help="This field cannot be left blank!")
     parser.add_argument("price", type=float, required=True, help="This field cannot be left blank!")
-
-    def post(self):
+    
+    @staticmethod
+    def post():
         data = self.parser.parse_args()
         book = BookModel(**data)
         print(book)
@@ -38,5 +42,7 @@ class CreateBook(Resource):
 
 
 class BookList(Resource):
-    def get(self):
+    
+    @staticmethod
+    def get():
         return {'books': [item.json() for item in BookModel.query.all()]}
